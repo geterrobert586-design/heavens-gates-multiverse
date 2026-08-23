@@ -1,0 +1,63 @@
+{
+  "name": "Location",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "district": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "significance": {
+      "type": "string"
+    },
+    "characters_associated": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "studio",
+        "street",
+        "corporate",
+        "residential",
+        "spiritual",
+        "hidden"
+      ]
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "coordinates": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "name",
+    "type"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

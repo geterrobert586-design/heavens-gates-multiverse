@@ -1,0 +1,86 @@
+{
+  "name": "Book",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "book_number": {
+      "type": "number"
+    },
+    "cover_image_url": {
+      "type": "string"
+    },
+    "synopsis": {
+      "type": "string"
+    },
+    "themes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": false
+    },
+    "release_date": {
+      "type": "string",
+      "format": "date"
+    },
+    "ebook_price": {
+      "type": "number",
+      "description": "Price for ebook in dollars"
+    },
+    "ebook_file_url": {
+      "type": "string",
+      "description": "URL to the ebook file (PDF/EPUB)"
+    },
+    "ebook_format": {
+      "type": "string",
+      "enum": [
+        "pdf",
+        "epub",
+        "both"
+      ],
+      "default": "pdf",
+      "description": "Available ebook format"
+    }
+  },
+  "required": [
+    "title",
+    "book_number"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.is_published": true
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

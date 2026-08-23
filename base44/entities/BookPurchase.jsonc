@@ -1,0 +1,70 @@
+{
+  "name": "BookPurchase",
+  "type": "object",
+  "properties": {
+    "book_id": {
+      "type": "string",
+      "description": "ID of the purchased book"
+    },
+    "book_title": {
+      "type": "string",
+      "description": "Title of the purchased book"
+    },
+    "ebook_format": {
+      "type": "string",
+      "enum": [
+        "pdf",
+        "epub"
+      ],
+      "description": "Format of the purchased ebook"
+    },
+    "price_paid": {
+      "type": "number",
+      "description": "Amount paid for the ebook"
+    },
+    "purchase_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of purchase"
+    },
+    "ebook_file_url": {
+      "type": "string",
+      "description": "URL to download the ebook file"
+    },
+    "stripe_payment_intent_id": {
+      "type": "string",
+      "description": "Stripe payment intent ID for tracking"
+    },
+    "owner_name": {
+      "type": "string",
+      "description": "Name of the purchaser"
+    },
+    "owner_email": {
+      "type": "string",
+      "description": "Email of the purchaser"
+    }
+  },
+  "required": [
+    "book_id",
+    "book_title",
+    "ebook_format",
+    "price_paid",
+    "owner_email"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "update": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

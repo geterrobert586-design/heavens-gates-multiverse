@@ -1,0 +1,66 @@
+{
+  "name": "AcademyCourse",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Course title"
+    },
+    "subtitle": {
+      "type": "string",
+      "description": "Course subtitle"
+    },
+    "description": {
+      "type": "string",
+      "description": "Full course description"
+    },
+    "orderNumber": {
+      "type": "number",
+      "description": "Display order"
+    },
+    "difficultyLevel": {
+      "type": "string",
+      "enum": [
+        "beginner",
+        "intermediate",
+        "advanced"
+      ],
+      "default": "beginner"
+    },
+    "estimatedTime": {
+      "type": "string",
+      "description": "Estimated completion time (e.g., '2-3 hours')"
+    },
+    "imageUrl": {
+      "type": "string",
+      "description": "Course cover image URL"
+    },
+    "isPremium": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "orderNumber"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "name": "AcademyProgress",
+  "type": "object",
+  "properties": {
+    "lessonId": {
+      "type": "string",
+      "description": "Lesson ID"
+    },
+    "completed": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether lesson is marked complete"
+    },
+    "completedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When lesson was completed"
+    },
+    "notes": {
+      "type": "string",
+      "description": "User's personal notes on the lesson"
+    }
+  },
+  "required": [
+    "lessonId"
+  ],
+  "rls": {
+    "create": {
+      "created_by": "{{user.email}}"
+    },
+    "read": {
+      "created_by": "{{user.email}}"
+    },
+    "update": {
+      "created_by": "{{user.email}}"
+    },
+    "delete": {
+      "created_by": "{{user.email}}"
+    }
+  }
+}

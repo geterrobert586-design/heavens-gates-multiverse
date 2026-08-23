@@ -1,0 +1,83 @@
+{
+  "name": "LoreEntry",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "doctrine",
+        "backstory",
+        "bloodline",
+        "corporate",
+        "street",
+        "spiritual",
+        "hidden"
+      ]
+    },
+    "content": {
+      "type": "string"
+    },
+    "related_characters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "is_locked": {
+      "type": "boolean",
+      "default": false
+    },
+    "unlock_hint": {
+      "type": "string"
+    },
+    "image_url": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.is_locked": false
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "user_condition": {
+            "subscription_tier": "Supporter"
+          }
+        },
+        {
+          "user_condition": {
+            "subscription_tier": "Inner Circle"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

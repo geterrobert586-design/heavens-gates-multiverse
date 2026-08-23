@@ -1,0 +1,95 @@
+{
+  "name": "CatalogItem",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Title of the content"
+    },
+    "description": {
+      "type": "string",
+      "description": "Description of the content"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "music",
+        "art",
+        "writing",
+        "video",
+        "other"
+      ],
+      "description": "Content category"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "archived"
+      ],
+      "default": "draft",
+      "description": "Publication status"
+    },
+    "tier": {
+      "type": "string",
+      "enum": [
+        "free",
+        "supporter",
+        "premium",
+        "exclusive"
+      ],
+      "default": "free",
+      "description": "Access tier required"
+    },
+    "file_url": {
+      "type": "string",
+      "description": "URL of the uploaded content file"
+    },
+    "cover_image_url": {
+      "type": "string",
+      "description": "URL of the cover image"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorization"
+    },
+    "views": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of views"
+    },
+    "likes": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of likes"
+    }
+  },
+  "required": [
+    "title",
+    "category"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "data.status": "published"
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "name": "Beat",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Beat title"
+    },
+    "producer": {
+      "type": "string",
+      "description": "Producer name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Beat description"
+    },
+    "audio_url": {
+      "type": "string",
+      "description": "URL to the beat audio file"
+    },
+    "cover_image_url": {
+      "type": "string",
+      "description": "Beat cover art"
+    },
+    "bpm": {
+      "type": "number",
+      "description": "Beats per minute"
+    },
+    "key": {
+      "type": "string",
+      "description": "Musical key (e.g., C Major, A Minor)"
+    },
+    "mood": {
+      "type": "string",
+      "enum": [
+        "intense",
+        "chill",
+        "uplifting",
+        "dark",
+        "spiritual",
+        "street",
+        "corporate",
+        "melancholy"
+      ],
+      "description": "Beat mood"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for categorization"
+    },
+    "price_mp3": {
+      "type": "number",
+      "default": 0,
+      "description": "Price for MP3 license (free for Supporter tier)"
+    },
+    "price_wav": {
+      "type": "number",
+      "default": 25,
+      "description": "Price for WAV premium license"
+    },
+    "price_unlimited": {
+      "type": "number",
+      "default": 50,
+      "description": "Price for unlimited exclusive license"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether beat is featured"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether beat is published"
+    },
+    "orderNumber": {
+      "type": "number",
+      "description": "Display order"
+    }
+  },
+  "required": [
+    "title",
+    "producer"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "data.is_published": true
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

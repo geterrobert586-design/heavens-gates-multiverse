@@ -1,0 +1,92 @@
+{
+  "name": "PromoVideo",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Video title"
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of the scene"
+    },
+    "videoUrl": {
+      "type": "string",
+      "description": "URL to the generated video"
+    },
+    "thumbnailUrl": {
+      "type": "string",
+      "description": "Thumbnail image for the video"
+    },
+    "featuredCharacter": {
+      "type": "string",
+      "description": "Main character featured in the clip"
+    },
+    "sceneType": {
+      "type": "string",
+      "enum": [
+        "character_intro",
+        "key_moment",
+        "doctrine",
+        "location",
+        "quote",
+        "teaser"
+      ],
+      "description": "Type of promotional scene"
+    },
+    "duration": {
+      "type": "string",
+      "default": "6 seconds",
+      "description": "Video duration"
+    },
+    "orderNumber": {
+      "type": "number",
+      "description": "Display order"
+    },
+    "isPublished": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the video is published"
+    },
+    "generationPrompt": {
+      "type": "string",
+      "description": "AI prompt ready for video generation"
+    }
+  },
+  "required": [
+    "title",
+    "sceneType"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.isPublished": true,
+          "user_condition": {
+            "subscription_tier": "Inner Circle"
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

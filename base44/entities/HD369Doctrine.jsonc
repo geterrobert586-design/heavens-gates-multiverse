@@ -1,0 +1,63 @@
+{
+  "name": "HD369Doctrine",
+  "type": "object",
+  "properties": {
+    "section": {
+      "type": "string",
+      "enum": [
+        "overview",
+        "the_word",
+        "the_work",
+        "the_witness",
+        "the_gates",
+        "daily_alignment",
+        "scriptures",
+        "practices"
+      ],
+      "description": "Section category"
+    },
+    "title": {
+      "type": "string",
+      "description": "Section title"
+    },
+    "subtitle": {
+      "type": "string",
+      "description": "Section subtitle"
+    },
+    "content": {
+      "type": "string",
+      "description": "Main content in markdown"
+    },
+    "inTheChronicles": {
+      "type": "string",
+      "description": "How this appears in the story"
+    },
+    "orderNumber": {
+      "type": "number",
+      "description": "Display order"
+    }
+  },
+  "required": [
+    "section",
+    "title",
+    "content"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

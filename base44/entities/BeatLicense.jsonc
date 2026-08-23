@@ -1,0 +1,89 @@
+{
+  "name": "BeatLicense",
+  "type": "object",
+  "properties": {
+    "beat_id": {
+      "type": "string",
+      "description": "ID of the purchased beat"
+    },
+    "beat_title": {
+      "type": "string",
+      "description": "Title of the purchased beat"
+    },
+    "license_type": {
+      "type": "string",
+      "enum": [
+        "mp3",
+        "wav_premium",
+        "unlimited_exclusive"
+      ],
+      "description": "Type of license purchased"
+    },
+    "price_paid": {
+      "type": "number",
+      "description": "Amount paid for the license"
+    },
+    "purchase_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Date of purchase"
+    },
+    "expiration_date": {
+      "type": "string",
+      "format": "date-time",
+      "description": "License expiration date"
+    },
+    "license_certificate_url": {
+      "type": "string",
+      "description": "URL to the generated license certificate PDF"
+    },
+    "stripe_payment_intent_id": {
+      "type": "string",
+      "description": "Stripe payment intent ID for tracking"
+    },
+    "owner_name": {
+      "type": "string",
+      "description": "Artist name who purchased the license"
+    },
+    "owner_email": {
+      "type": "string",
+      "description": "Artist email for license delivery"
+    },
+    "is_buyout_requested": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether artist has requested buyout at term end"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "expired",
+        "buyout_completed"
+      ],
+      "default": "active",
+      "description": "Current license status"
+    }
+  },
+  "required": [
+    "beat_id",
+    "beat_title",
+    "license_type",
+    "price_paid",
+    "owner_email"
+  ],
+  "rls": {
+    "create": true,
+    "read": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "update": {
+      "data.owner_email": "{{user.email}}"
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

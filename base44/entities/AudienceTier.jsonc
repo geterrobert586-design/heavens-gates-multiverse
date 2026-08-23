@@ -1,0 +1,61 @@
+{
+  "name": "AudienceTier",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the tier"
+    },
+    "description": {
+      "type": "string",
+      "description": "What this tier offers"
+    },
+    "price": {
+      "type": "number",
+      "description": "Monthly price in dollars"
+    },
+    "benefits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "List of benefits"
+    },
+    "color": {
+      "type": "string",
+      "description": "Theme color for the tier card"
+    },
+    "is_active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether the tier is currently active"
+    },
+    "subscriber_count": {
+      "type": "number",
+      "default": 0,
+      "description": "Number of subscribers"
+    }
+  },
+  "required": [
+    "name",
+    "price"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

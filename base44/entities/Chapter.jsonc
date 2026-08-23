@@ -1,0 +1,70 @@
+{
+  "name": "Chapter",
+  "type": "object",
+  "properties": {
+    "book_id": {
+      "type": "string"
+    },
+    "chapter_number": {
+      "type": "number"
+    },
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "string"
+    },
+    "opening_quote": {
+      "type": "string"
+    },
+    "quote_author": {
+      "type": "string"
+    },
+    "pov_character": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "is_published": {
+      "type": "boolean",
+      "default": false
+    },
+    "word_count": {
+      "type": "number"
+    },
+    "audio_url": {
+      "type": "string",
+      "description": "URL to the audio file for this chapter"
+    },
+    "audio_duration": {
+      "type": "string",
+      "description": "Duration of the audio (e.g., '12:34')"
+    }
+  },
+  "required": [
+    "book_id",
+    "chapter_number",
+    "title"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "data.is_published": true
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

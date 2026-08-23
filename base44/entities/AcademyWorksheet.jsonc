@@ -1,0 +1,52 @@
+{
+  "name": "AcademyWorksheet",
+  "type": "object",
+  "properties": {
+    "lessonId": {
+      "type": "string",
+      "description": "Associated lesson ID"
+    },
+    "title": {
+      "type": "string",
+      "description": "Worksheet title"
+    },
+    "description": {
+      "type": "string",
+      "description": "What this worksheet helps with"
+    },
+    "worksheetFields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Field labels for the worksheet"
+    },
+    "isPremium": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "title",
+    "description",
+    "worksheetFields"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

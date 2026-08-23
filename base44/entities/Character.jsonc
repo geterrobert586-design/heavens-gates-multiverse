@@ -1,0 +1,114 @@
+{
+  "name": "Character",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "alias": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": [
+        "protagonist",
+        "antagonist",
+        "ally",
+        "neutral",
+        "legacy"
+      ]
+    },
+    "faction": {
+      "type": "string"
+    },
+    "bio": {
+      "type": "string"
+    },
+    "backstory": {
+      "type": "string"
+    },
+    "quote": {
+      "type": "string"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "character_name": {
+            "type": "string"
+          },
+          "relation": {
+            "type": "string"
+          },
+          "nature": {
+            "type": "string",
+            "enum": [
+              "ally",
+              "enemy",
+              "family",
+              "mentor",
+              "romantic",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "image_url": {
+      "type": "string"
+    },
+    "is_hidden": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "deceased",
+        "unknown",
+        "legacy"
+      ]
+    }
+  },
+  "required": [
+    "name",
+    "role"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "data.is_hidden": false
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

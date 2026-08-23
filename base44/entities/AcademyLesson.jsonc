@@ -1,0 +1,94 @@
+{
+  "name": "AcademyLesson",
+  "type": "object",
+  "properties": {
+    "courseId": {
+      "type": "string",
+      "description": "Parent course ID"
+    },
+    "title": {
+      "type": "string",
+      "description": "Lesson title"
+    },
+    "subtitle": {
+      "type": "string",
+      "description": "Lesson subtitle"
+    },
+    "lessonBody": {
+      "type": "string",
+      "description": "Main lesson content in markdown"
+    },
+    "barryLesson": {
+      "type": "string",
+      "description": "Barry's perspective on the lesson"
+    },
+    "keyTakeaways": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Key points from the lesson"
+    },
+    "actionSteps": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Action items for the user"
+    },
+    "quizQuestions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "question": {
+            "type": "string"
+          },
+          "answers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "description": "Quiz questions for comprehension"
+    },
+    "orderNumber": {
+      "type": "number",
+      "description": "Display order within course"
+    },
+    "estimatedTime": {
+      "type": "string",
+      "description": "Estimated reading time"
+    },
+    "isPremium": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "courseId",
+    "title",
+    "lessonBody",
+    "orderNumber"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": true,
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "name": "TimelineEvent",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "era": {
+      "type": "string",
+      "enum": [
+        "origins",
+        "rise",
+        "empire",
+        "conflict",
+        "legacy"
+      ]
+    },
+    "characters_involved": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "location": {
+      "type": "string"
+    },
+    "is_hidden": {
+      "type": "boolean",
+      "default": false
+    },
+    "year_in_story": {
+      "type": "string"
+    },
+    "significance": {
+      "type": "string",
+      "enum": [
+        "critical",
+        "major",
+        "minor"
+      ]
+    }
+  },
+  "required": [
+    "title",
+    "era"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "data.is_hidden": false
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
