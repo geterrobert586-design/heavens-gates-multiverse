@@ -9,11 +9,16 @@ export default function EpisodeZero() {
   const [state, setState] = useState(() => loadEpisodeState(initialEpisodeState));
   const scene = episodeZero.scenes[state.currentScene] || episodeZero.scenes.opening;
   const [imageFailed, setImageFailed] = useState(false);
+  const [choiceLocked, setChoiceLocked] = useState(false);
   const isMuted = Boolean(state.audioSettings?.muted);
   const captionsOn = state.audioSettings?.captions !== false;
   const choiceCount = state.choices?.length || 0;
 
-  useEffect(() => { setImageFailed(false); }, [state.currentScene]);
+  useEffect(() => {
+    setImageFailed(false);
+    setChoiceLocked(false);
+    if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [state.currentScene]);
 
   useEffect(() => { saveEpisodeState(state); }, [state]);
 
@@ -38,6 +43,8 @@ export default function EpisodeZero() {
   }, [state.trust, state.power, state.legacy]);
 
   function choose(choice) {
+    if (choiceLocked) return;
+    setChoiceLocked(true);
     setState((current) => {
       const effect = choice.effect || {};
       return {
@@ -145,7 +152,7 @@ export default function EpisodeZero() {
             ) : (
               <div className="grid gap-3 mt-6">
                 {(scene.choices || []).map((choice) => (
-                  <button key={choice.id || choice.text} onClick={() => choose(choice)} className="w-full text-left rounded-md border border-primary/30 bg-primary/5 hover:bg-primary/10 px-5 py-4 transition-colors">
+                  <button key={choice.id || choice.text} disabled={choiceLocked} onClick={() => choose(choice)} className="w-full text-left rounded-md border border-primary/30 bg-primary/5 hover:bg-primary/10 disabled:opacity-60 disabled:cursor-wait px-5 py-4 transition-colors">
                     {choice.text}
                   </button>
                 ))}
