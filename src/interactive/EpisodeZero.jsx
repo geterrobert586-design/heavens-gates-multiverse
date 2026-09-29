@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, BookOpen, RotateCcw, Volume2 } from "lucide-react";
 import { episodeZero, initialEpisodeState } from "./story/episodeZero";
@@ -7,6 +8,9 @@ import { clearEpisodeState, loadEpisodeState, saveEpisodeState } from "./engine/
 export default function EpisodeZero() {
   const [state, setState] = useState(() => loadEpisodeState(initialEpisodeState));
   const scene = episodeZero.scenes[state.currentScene] || episodeZero.scenes.opening;
+  const [imageFailed, setImageFailed] = useState(false);
+
+  useEffect(() => { setImageFailed(false); }, [state.currentScene]);
 
   useEffect(() => { saveEpisodeState(state); }, [state]);
 
@@ -54,10 +58,34 @@ export default function EpisodeZero() {
 
       <main className="flex-1 flex items-stretch justify-center p-4 md:p-8">
         <section className="w-full max-w-3xl min-h-[72vh] rounded-2xl border border-border/60 bg-card/40 overflow-hidden flex flex-col">
-          <div className="flex-1 min-h-[280px] md:min-h-[380px] p-6 md:p-10 flex flex-col justify-end bg-gradient-to-b from-primary/5 via-background/20 to-background">
-            <p className="text-[10px] tracking-[0.3em] uppercase text-primary">{scene.label}</p>
-            <h1 className="font-heading text-3xl md:text-5xl font-black mt-2">{scene.title}</h1>
-            <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-3">{scene.location}</p>
+          <div className="relative flex-1 min-h-[320px] md:min-h-[440px] overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={scene.id}
+                initial={{ opacity: 0, scale: 1.015 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.45 }}
+                className="absolute inset-0"
+              >
+                {scene.visual?.src && !imageFailed && (
+                  <img
+                    src={scene.visual.src}
+                    alt={scene.visual.alt || ""}
+                    onError={() => setImageFailed(true)}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    style={{ objectPosition: scene.visual.position || "center" }}
+                  />
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-black/20" />
+              </motion.div>
+            </AnimatePresence>
+
+            <div className="relative z-10 min-h-[320px] md:min-h-[440px] p-6 md:p-10 flex flex-col justify-end">
+              <p className="text-[10px] tracking-[0.3em] uppercase text-primary">{scene.label}</p>
+              <h1 className="font-heading text-3xl md:text-5xl font-black mt-2 drop-shadow-lg">{scene.title}</h1>
+              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-3">{scene.location}</p>
+            </div>
           </div>
 
           <div className="p-5 md:p-8 border-t border-border/60 bg-background/90">
