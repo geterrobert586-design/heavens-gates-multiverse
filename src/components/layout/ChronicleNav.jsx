@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Home, BookOpen, Users, GitBranch, Building2, Clock,
   MapPin, Music2, Eye, StickyNote, MessageSquare, Menu, X, ChevronRight,
-  Crown, Sparkles, Film, Disc, FileText, Library, Settings
+  Crown, Sparkles, Film, Disc, FileText, Library, Settings, Gamepad2
 } from "lucide-react";
 
 const navItems = [
@@ -16,6 +16,7 @@ const navItems = [
   { path: "/timeline", label: "Timeline", icon: Clock, color: "text-primary" },
   { path: "/locations", label: "Columbia Archive", icon: MapPin, color: "text-emerald-400" },
   { path: "/soundtrack", label: "Soundtrack", icon: Music2, color: "text-primary" },
+  { path: "/interactive", label: "Interactive Chronicles", icon: Gamepad2, color: "text-primary" },
   { path: "/lore", label: "Hidden Lore", icon: Eye, color: "text-red-400" },
   { path: "/notes", label: "Reader Notes", icon: StickyNote, color: "text-primary" },
   { path: "/community", label: "Fan Theories", icon: MessageSquare, color: "text-primary" },
