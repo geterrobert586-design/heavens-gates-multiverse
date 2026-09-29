@@ -1,7 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, RotateCcw, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, BookOpen, Pause, Play, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import { episodeZero, initialEpisodeState } from "./story/episodeZero";
 import { clearEpisodeState, loadEpisodeState, saveEpisodeState } from "./engine/saveManager";
 
@@ -10,6 +10,10 @@ export default function EpisodeZero() {
   const scene = episodeZero.scenes[state.currentScene] || episodeZero.scenes.opening;
   const [imageFailed, setImageFailed] = useState(false);
   const [choiceLocked, setChoiceLocked] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const speechRun = useRef(0);
+  const audioSupported = typeof window !== "undefined" && "speechSynthesis" in window;
   const isMuted = Boolean(state.audioSettings?.muted);
   const captionsOn = state.audioSettings?.captions !== false;
   const sceneOrder = ["opening", "scene-1", "scene-2", "scene-3", "payoff", "ending"];
@@ -44,6 +48,84 @@ export default function EpisodeZero() {
     return [prelude, ...base, reaction, payoff].filter(Boolean);
   }, [scene, firstChoice, secondChoice]);
 
+  const spokenLines = useMemo(() => [
+    ...(state.currentScene === "opening" ? episodeZero.opening.narration : [scene.narration]),
+    ...dialogue.map((line) => `${line.speaker}. ${line.text}`),
+    ...(scene.ending && scene.endingVariations ? [scene.endingVariations[
+      [["trust", state.trust], ["power", state.power], ["legacy", state.legacy]]
+        .sort((a, b) => b[1] - a[1])[0][0]
+    ]] : [])
+  ].filter(Boolean), [state.currentScene, scene, dialogue, state.trust, state.power, state.legacy]);
+
+  function stopAudio() {
+    speechRun.current += 1;
+    if (audioSupported) window.speechSynthesis.cancel();
+    setIsPlaying(false);
+    setIsPaused(false);
+  }
+
+  function playAudio() {
+    if (!audioSupported || isMuted) return;
+    if (isPaused) {
+      window.speechSynthesis.resume();
+      setIsPaused(false);
+      setIsPlaying(true);
+      return;
+    }
+    const speech = window.speechSynthesis;
+    speech.cancel();
+    const run = ++speechRun.current;
+    spokenLines.forEach((line, index) => {
+      const utterance = new SpeechSynthesisUtterance(line);
+      utterance.rate = 0.92;
+      if (index === spokenLines.length - 1) utterance.onend = () => {
+        if (speechRun.current === run) setIsPlaying(false);
+      };
+      utterance.onerror = () => {
+        if (speechRun.current === run) setIsPlaying(false);
+      };
+      speech.speak(utterance);
+    });
+    setIsPlaying(true);
+  }
+
+  function togglePlayback() {
+    if (isPlaying) {
+      window.speechSynthesis.pause();
+      setIsPaused(true);
+      setIsPlaying(false);
+    } else playAudio();
+  }
+
+  useEffect(() => {
+    // Stop the prior scene before the new scene's narration can begin.
+    speechRun.current += 1;
+    if (audioSupported) window.speechSynthesis.cancel();
+    setIsPlaying(false);
+    setIsPaused(false);
+    if (state.audioSettings?.autoplay && !isMuted && audioSupported) {
+      const run = ++speechRun.current;
+      const speech = window.speechSynthesis;
+      spokenLines.forEach((line, index) => {
+        const utterance = new SpeechSynthesisUtterance(line);
+        utterance.rate = 0.92;
+        if (index === spokenLines.length - 1) utterance.onend = () => {
+          if (speechRun.current === run) setIsPlaying(false);
+        };
+        speech.speak(utterance);
+      });
+      setIsPlaying(true);
+    }
+    return () => {
+      speechRun.current += 1;
+      if (audioSupported) window.speechSynthesis.cancel();
+    };
+  }, [scene.id]);
+
+  useEffect(() => {
+    if (isMuted) stopAudio();
+  }, [isMuted]);
+
   const endingPath = useMemo(() => {
     const paths = [
       ["trust", state.trust],
@@ -75,6 +157,7 @@ export default function EpisodeZero() {
   }
 
   function restart() {
+    stopAudio();
     clearEpisodeState();
     setState(initialEpisodeState);
   }
@@ -88,6 +171,7 @@ export default function EpisodeZero() {
           <p className="font-heading text-xs font-bold">The Invitation</p>
         </div>
         <div className="flex items-center gap-3 text-muted-foreground">
+          <button type="button" onClick={togglePlayback} disabled={!audioSupported || isMuted} aria-label={isPlaying ? "Pause spoken audio" : isPaused ? "Resume spoken audio" : "Play spoken audio"} title={audioSupported ? "Spoken narration" : "Speech unavailable on this device"} className="rounded-md p-1 hover:text-foreground disabled:opacity-40">{isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}</button>
           <button type="button" onClick={() => updateAudioSetting("muted", !isMuted)} aria-label={isMuted ? "Unmute episode audio" : "Mute episode audio"} className="rounded-md p-1 hover:text-foreground">{isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}</button>
           <button type="button" onClick={() => setState((s) => ({ ...s, readMode: !s.readMode }))} aria-label="Toggle read mode" className={state.readMode ? "text-primary" : ""}><BookOpen className="w-4 h-4" /></button>
         </div>
@@ -131,14 +215,17 @@ export default function EpisodeZero() {
             </div>
             <div className="mb-4 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
               <span>{state.readMode ? "Read Mode" : "Story Mode"} · {progressPercent}% · Choices remembered</span>
-              <button type="button" onClick={() => updateAudioSetting("captions", !captionsOn)} className="rounded border border-border/60 px-2 py-1">{captionsOn ? "Captions On" : "Captions Off"}</button>
+              <div className="flex gap-2">
+                <button type="button" onClick={() => updateAudioSetting("autoplay", !state.audioSettings?.autoplay)} disabled={!audioSupported} aria-pressed={Boolean(state.audioSettings?.autoplay)} className="rounded border border-border/60 px-2 py-1 disabled:opacity-40">Auto Voice {state.audioSettings?.autoplay ? "On" : "Off"}</button>
+                <button type="button" onClick={() => updateAudioSetting("captions", !captionsOn)} aria-pressed={captionsOn} className="rounded border border-border/60 px-2 py-1">Text {captionsOn ? "On" : "Off"}</button>
+              </div>
             </div>
-            {state.currentScene === "opening" && episodeZero.opening.narration.map((line) => (
+            {(captionsOn || state.readMode || !audioSupported || isMuted) && state.currentScene === "opening" && episodeZero.opening.narration.map((line) => (
               <p key={line} className="text-base md:text-lg mb-1">{line}</p>
             ))}
-            {state.currentScene !== "opening" && <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-5">{scene.narration}</p>}
+            {(captionsOn || state.readMode || !audioSupported || isMuted) && state.currentScene !== "opening" && <p className="text-sm md:text-base text-muted-foreground leading-relaxed mb-5">{scene.narration}</p>}
 
-            {dialogue.map((line, index) => (
+            {(captionsOn || state.readMode || !audioSupported || isMuted) && dialogue.map((line, index) => (
               <div key={index} className="mb-4">
                 <p className="text-[10px] tracking-[0.25em] uppercase text-primary">{line.speaker}</p>
                 <p className="text-lg md:text-xl font-medium mt-1">“{line.text}”</p>
