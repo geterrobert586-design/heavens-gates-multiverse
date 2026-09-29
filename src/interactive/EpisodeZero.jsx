@@ -179,7 +179,7 @@ export default function EpisodeZero() {
 
       <main className="flex-1 flex items-stretch justify-center p-4 md:p-8">
         <section className="w-full max-w-3xl min-h-[72vh] rounded-2xl border border-border/60 bg-card/40 overflow-hidden flex flex-col">
-          <div className="relative flex-1 min-h-[320px] md:min-h-[440px] overflow-hidden bg-gradient-to-b from-primary/10 via-background to-background">
+          <div className="relative aspect-[2/1] overflow-hidden bg-background">
             <AnimatePresence mode="wait">
               <motion.div
                 key={scene.id}
@@ -195,18 +195,17 @@ export default function EpisodeZero() {
                     alt={scene.visual.alt || ""}
                     onError={() => setImageFailed(true)}
                     className="absolute inset-0 w-full h-full object-cover"
-                    style={{ objectPosition: scene.visual.position || "center" }}
+                    style={{ objectPosition: scene.id === "ending" ? "center 35%" : scene.id === "opening" ? "center 35%" : "center 22%" }}
                   />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/25 to-black/20" />
               </motion.div>
             </AnimatePresence>
+          </div>
 
-            <div className="relative z-10 min-h-[320px] md:min-h-[440px] p-6 md:p-10 flex flex-col justify-end">
-              <p className="text-[10px] tracking-[0.3em] uppercase text-primary">{scene.label}</p>
-              <h1 className="font-heading text-3xl md:text-5xl font-black mt-2 drop-shadow-lg">{scene.title}</h1>
-              <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mt-3">{scene.location}</p>
-            </div>
+          <div className="border-t border-border/60 px-5 py-4 md:px-8 bg-card/60">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-primary">{scene.label}</p>
+            <h1 className="font-heading text-xl md:text-3xl font-bold mt-1">{scene.title}</h1>
+            <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground mt-2">{scene.location}</p>
           </div>
 
           <div className={`p-5 md:p-8 border-t border-border/60 bg-background/90 ${state.readMode ? "md:px-14" : ""}`}>
