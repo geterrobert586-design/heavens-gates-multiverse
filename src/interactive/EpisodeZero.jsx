@@ -88,8 +88,8 @@ export default function EpisodeZero() {
           <p className="font-heading text-xs font-bold">The Invitation</p>
         </div>
         <div className="flex items-center gap-3 text-muted-foreground">
-          <Volume2 className="w-4 h-4" aria-label="Audio placeholder" />
-          <button onClick={() => setState((s) => ({ ...s, readMode: !s.readMode }))} aria-label="Toggle read mode"><BookOpen className="w-4 h-4" /></button>
+          <button type="button" onClick={() => updateAudioSetting("muted", !isMuted)} aria-label={isMuted ? "Unmute episode audio" : "Mute episode audio"} className="rounded-md p-1 hover:text-foreground">{isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}</button>
+          <button type="button" onClick={() => setState((s) => ({ ...s, readMode: !s.readMode }))} aria-label="Toggle read mode" className={state.readMode ? "text-primary" : ""}><BookOpen className="w-4 h-4" /></button>
         </div>
       </header>
 
