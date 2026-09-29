@@ -24,6 +24,15 @@ export default function EpisodeZero() {
 
   useEffect(() => { saveEpisodeState(state); }, [state]);
 
+  useEffect(() => {
+    const nextIndex = sceneOrder.indexOf(state.currentScene) + 1;
+    const nextScene = episodeZero.scenes[sceneOrder[nextIndex]];
+    if (nextScene?.visual?.src && typeof window !== "undefined") {
+      const preload = new Image();
+      preload.src = nextScene.visual.src;
+    }
+  }, [state.currentScene]);
+
   const firstChoice = state.choices.find((choice) => ["tell-makaila", "keep-quiet", "call-gangsta"].includes(choice));
   const secondChoice = state.choices.find((choice) => ["follow-gangsta", "listen-sarah", "call-barry"].includes(choice));
 
