@@ -1,9 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Play, Lock, RotateCcw } from "lucide-react";
+import { clearEpisodeState } from "./engine/saveManager";
 
 export default function InteractiveHome() {
-  const hasSave = typeof window !== "undefined" && Boolean(window.localStorage.getItem("hg_interactive_episode_zero"));
+  const [hasSave, setHasSave] = useState(() => typeof window !== "undefined" && Boolean(window.localStorage.getItem("hg_interactive_episode_zero")));
+
+  function startOver() {
+    clearEpisodeState();
+    setHasSave(false);
+  }
 
   return (
     <section className="max-w-4xl mx-auto py-8 md:py-14">
@@ -16,10 +22,17 @@ export default function InteractiveHome() {
           <p className="text-[10px] tracking-[0.3em] uppercase text-primary">Episode Zero</p>
           <h2 className="font-heading text-2xl font-bold mt-2">The Invitation</h2>
           <p className="text-sm text-muted-foreground mt-3">An internal breach. Barry's credentials. Somebody already has the key.</p>
-          <Link to="/interactive/episode-zero" className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary text-primary-foreground px-5 py-3 font-semibold">
-            {hasSave ? <RotateCcw className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-            {hasSave ? "Continue Episode" : "Enter the Gates"}
-          </Link>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link to="/interactive/episode-zero" className="inline-flex items-center gap-2 rounded-md bg-primary text-primary-foreground px-5 py-3 font-semibold">
+              <Play className="w-4 h-4" />
+              {hasSave ? "Continue Episode" : "Enter the Gates"}
+            </Link>
+            {hasSave && (
+              <Link to="/interactive/episode-zero" onClick={startOver} className="inline-flex items-center gap-2 rounded-md border border-border px-5 py-3 font-semibold">
+                <RotateCcw className="w-4 h-4" /> Start Over
+              </Link>
+            )}
+          </div>
         </div>
 
         <div className="border border-border/60 bg-card/30 rounded-xl p-6 opacity-60">
