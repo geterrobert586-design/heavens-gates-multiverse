@@ -15,6 +15,7 @@ export const episodeZero = {
       label: "Episode Zero",
       title: "The Invitation",
       location: "Heavens Gates",
+      visual: { src: "/interactive/episode-zero/opening.webp", position: "center", alt: "Heavens Gates Interactive Chronicles opening" },
       narration: "Your choices will be remembered.",
       choices: [{ text: "Enter the Gates", next: "scene-1" }]
     },
@@ -23,6 +24,7 @@ export const episodeZero = {
       label: "Scene One",
       title: "Unknown Number",
       location: "Heavens Gates HQ — Night",
+      visual: { src: "/interactive/episode-zero/scene-1-barry-makaila.webp", position: "center", alt: "Barry and Makaila at Heavens Gates headquarters at night" },
       narration: "Barry's phone lights up with a message from an unknown number: “WE NEED TO TALK. TONIGHT.”",
       dialogue: [{ speaker: "Makaila", text: "You gonna tell me what that was?" }],
       choices: [
@@ -36,6 +38,7 @@ export const episodeZero = {
       label: "Scene Two",
       title: "The Studio",
       location: "South Beltline Studio",
+      visual: { src: "/interactive/episode-zero/scene-2-studio.webp", position: "center", alt: "Asad, Gangsta and Sarah Rae in the South Beltline studio" },
       narration: "Asad discovers that somebody outside Heavens Gates knows something that has not been announced. A file was accessed from the wrong place.",
       dialogue: [
         { speaker: "Gangsta", text: "Then let's find out who talking." },
@@ -52,6 +55,7 @@ export const episodeZero = {
       label: "Scene Three",
       title: "Somebody Has the Key",
       location: "Administrative Office",
+      visual: { src: "/interactive/episode-zero/scene-3-jamila.webp", position: "center", alt: "Jamila discovering the unauthorized Heavens Gates file access" },
       narration: "Jamila finds HG_EXPANSION_PLAN.pdf accessed three times from unauthorized locations. The administrator credential attached to the access log reads: BARRY PARKER.",
       dialogue: [
         { speaker: "Jamila", text: "Daddy… I think y'all need to see this." },
@@ -66,6 +70,7 @@ export const episodeZero = {
       label: "The Payoff",
       title: "Inside the System",
       location: "Heavens Gates HQ",
+      visual: { src: "/interactive/episode-zero/payoff.webp", position: "center", alt: "Barry, Makaila and Jamila confronting the Heavens Gates security breach" },
       narration: "Empires don't always fall because somebody kicks the door in. Sometimes… somebody already has the key.",
       conditionalDialogue: {
         "tell-makaila": { speaker: "Makaila", text: "Somebody's inside our system." },
@@ -79,6 +84,7 @@ export const episodeZero = {
       label: "Episode Complete",
       title: "Your Choices Have Only Begun.",
       location: "Heavens Gates: The Interactive Chronicles",
+      visual: { src: "/interactive/episode-zero/ending.webp", position: "center", alt: "Heavens Gates Interactive Chronicles episode ending" },
       narration: "The breach remains unresolved.",
       ending: true
     }
