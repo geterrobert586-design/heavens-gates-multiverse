@@ -40,6 +40,11 @@ export const episodeZero = {
       location: "South Beltline Studio",
       visual: { src: "/interactive/episode-zero/scene-2-studio.webp", position: "center", alt: "Asad, Gangsta and Sarah Rae in the South Beltline studio" },
       narration: "Asad discovers that somebody outside Heavens Gates knows something that has not been announced. A file was accessed from the wrong place.",
+      conditionalPrelude: {
+        "tell-makaila": { speaker: "Makaila", text: "Barry showed me the message. Nobody moves alone until we know what this is." },
+        "keep-quiet": { speaker: "Barry", text: "Keep this room tight. I don't want this traveling until we know what we're looking at." },
+        "call-gangsta": { speaker: "Gangsta", text: "Barry called me before I got here. Whatever this is, we handle it together." }
+      },
       dialogue: [
         { speaker: "Gangsta", text: "Then let's find out who talking." },
         { speaker: "Sarah Rae", text: "And do what? You don't even know what happened yet." }
@@ -63,6 +68,11 @@ export const episodeZero = {
         { speaker: "Jamila", text: "That's the problem." },
         { speaker: "Jamila", text: "It says you did." }
       ],
+      conditionalReaction: {
+        "follow-gangsta": { speaker: "Gangsta", text: "Say the word. We trace whoever touched it." },
+        "listen-sarah": { speaker: "Sarah Rae", text: "Now you see why we needed facts before somebody made a move." },
+        "call-barry": { speaker: "Barry", text: "Good. Nobody touches that log until I see everything." }
+      },
       choices: [{ id: "face-it", text: "Face the breach", next: "payoff" }]
     },
     payoff: {
@@ -86,6 +96,11 @@ export const episodeZero = {
       location: "Heavens Gates: The Interactive Chronicles",
       visual: { src: "/interactive/episode-zero/ending.webp", position: "center", alt: "Heavens Gates Interactive Chronicles episode ending" },
       narration: "The breach remains unresolved.",
+      endingVariations: {
+        trust: "You chose openness and restraint. The people closest to the Gates know more — and they will remember that.",
+        power: "You chose control and decisive action. The Gates are on alert — but pressure has a way of exposing fractures.",
+        legacy: "You chose the people and structure behind the empire. The circle is tightening around what Heavens Gates must protect."
+      },
       ending: true
     }
   }
