@@ -17,13 +17,25 @@ export default function EpisodeZero() {
 
   useEffect(() => { saveEpisodeState(state); }, [state]);
 
+  const firstChoice = state.choices.find((choice) => ["tell-makaila", "keep-quiet", "call-gangsta"].includes(choice));
+  const secondChoice = state.choices.find((choice) => ["follow-gangsta", "listen-sarah", "call-barry"].includes(choice));
+
   const dialogue = useMemo(() => {
     const base = scene.dialogue || [];
-    if (!scene.conditionalDialogue) return base;
-    const firstChoice = state.choices.find((choice) => ["tell-makaila", "keep-quiet", "call-gangsta"].includes(choice));
-    const conditional = scene.conditionalDialogue[firstChoice];
-    return conditional ? [...base, conditional] : base;
-  }, [scene, state.choices]);
+    const prelude = scene.conditionalPrelude?.[firstChoice];
+    const payoff = scene.conditionalDialogue?.[firstChoice];
+    const reaction = scene.conditionalReaction?.[secondChoice];
+    return [prelude, ...base, reaction, payoff].filter(Boolean);
+  }, [scene, firstChoice, secondChoice]);
+
+  const endingPath = useMemo(() => {
+    const paths = [
+      ["trust", state.trust],
+      ["power", state.power],
+      ["legacy", state.legacy]
+    ];
+    return paths.sort((a, b) => b[1] - a[1])[0]?.[0] || "legacy";
+  }, [state.trust, state.power, state.legacy]);
 
   function choose(choice) {
     setState((current) => {
@@ -117,6 +129,12 @@ export default function EpisodeZero() {
 
             {scene.ending ? (
               <div className="mt-7">
+                {scene.endingVariations?.[endingPath] && (
+                  <div className="mb-6 rounded-lg border border-primary/30 bg-primary/5 p-4">
+                    <p className="text-[10px] uppercase tracking-[0.25em] text-primary">Your path</p>
+                    <p className="mt-2 text-sm md:text-base leading-relaxed">{scene.endingVariations[endingPath]}</p>
+                  </div>
+                )}
                 <div className="grid sm:grid-cols-2 gap-3">
                   <Link to="/books" className="border border-border rounded-md px-4 py-3 text-center">Read the Books</Link>
                   <Link to="/characters" className="border border-border rounded-md px-4 py-3 text-center">Character Vault</Link>
