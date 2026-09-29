@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, BookOpen, RotateCcw, Volume2 } from "lucide-react";
+import { ArrowLeft, BookOpen, RotateCcw, Volume2, VolumeX } from "lucide-react";
 import { episodeZero, initialEpisodeState } from "./story/episodeZero";
 import { clearEpisodeState, loadEpisodeState, saveEpisodeState } from "./engine/saveManager";
 
@@ -9,6 +9,8 @@ export default function EpisodeZero() {
   const [state, setState] = useState(() => loadEpisodeState(initialEpisodeState));
   const scene = episodeZero.scenes[state.currentScene] || episodeZero.scenes.opening;
   const [imageFailed, setImageFailed] = useState(false);
+  const isMuted = Boolean(state.audioSettings?.muted);
+  const captionsOn = state.audioSettings?.captions !== false;
 
   useEffect(() => { setImageFailed(false); }, [state.currentScene]);
 
@@ -35,6 +37,10 @@ export default function EpisodeZero() {
         episodeCompleted: choice.next === "ending"
       };
     });
+  }
+
+  function updateAudioSetting(key, value) {
+    setState((prev) => ({ ...prev, audioSettings: { ...prev.audioSettings, [key]: value } }));
   }
 
   function restart() {
@@ -88,7 +94,11 @@ export default function EpisodeZero() {
             </div>
           </div>
 
-          <div className="p-5 md:p-8 border-t border-border/60 bg-background/90">
+          <div className={`p-5 md:p-8 border-t border-border/60 bg-background/90 ${state.readMode ? "md:px-14" : ""}`}>
+            <div className="mb-4 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
+              <span>{state.readMode ? "Read Mode" : "Story Mode"}</span>
+              <button type="button" onClick={() => updateAudioSetting("captions", !captionsOn)} className="rounded border border-border/60 px-2 py-1">{captionsOn ? "Captions On" : "Captions Off"}</button>
+            </div>
             {state.currentScene === "opening" && episodeZero.opening.narration.map((line) => (
               <p key={line} className="text-base md:text-lg mb-1">{line}</p>
             ))}
