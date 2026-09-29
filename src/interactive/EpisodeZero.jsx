@@ -11,6 +11,7 @@ export default function EpisodeZero() {
   const [imageFailed, setImageFailed] = useState(false);
   const isMuted = Boolean(state.audioSettings?.muted);
   const captionsOn = state.audioSettings?.captions !== false;
+  const choiceCount = state.choices?.length || 0;
 
   useEffect(() => { setImageFailed(false); }, [state.currentScene]);
 
@@ -95,8 +96,11 @@ export default function EpisodeZero() {
           </div>
 
           <div className={`p-5 md:p-8 border-t border-border/60 bg-background/90 ${state.readMode ? "md:px-14" : ""}`}>
+            <div className="mb-3 h-1 overflow-hidden rounded-full bg-muted/40" aria-label="Episode progress">
+              <div className="h-full bg-primary transition-all duration-500" style={{ width: `${Math.min(100, ((choiceCount + (state.episodeCompleted ? 1 : 0)) / 4) * 100)}%` }} />
+            </div>
             <div className="mb-4 flex items-center justify-between gap-3 text-[10px] uppercase tracking-[0.2em] text-muted-foreground">
-              <span>{state.readMode ? "Read Mode" : "Story Mode"}</span>
+              <span>{state.readMode ? "Read Mode" : "Story Mode"} · Choices remembered</span>
               <button type="button" onClick={() => updateAudioSetting("captions", !captionsOn)} className="rounded border border-border/60 px-2 py-1">{captionsOn ? "Captions On" : "Captions Off"}</button>
             </div>
             {state.currentScene === "opening" && episodeZero.opening.narration.map((line) => (
