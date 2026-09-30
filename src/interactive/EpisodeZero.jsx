@@ -179,7 +179,7 @@ export default function EpisodeZero() {
 
       <main className="flex-1 flex items-stretch justify-center p-4 md:p-8">
         <section className="w-full max-w-3xl min-h-[72vh] rounded-2xl border border-border/60 bg-card/40 overflow-hidden flex flex-col">
-          <div className="relative aspect-[2/1] overflow-hidden bg-background">
+          <div className={`relative overflow-hidden bg-background ${scene.id === "opening" ? "aspect-[5/6]" : scene.id === "ending" ? "aspect-[2/3]" : "aspect-[2/1]"}`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={scene.id}
@@ -195,18 +195,18 @@ export default function EpisodeZero() {
                     alt={scene.visual.alt || ""}
                     onError={() => setImageFailed(true)}
                     className="absolute inset-0 w-full h-full object-cover"
-                    style={{ objectPosition: scene.id === "ending" ? "center 35%" : scene.id === "opening" ? "center 35%" : "center 22%" }}
+                    style={{ objectPosition: scene.id === "opening" ? "center top" : scene.id === "ending" ? "center" : "center 22%" }}
                   />
                 )}
               </motion.div>
             </AnimatePresence>
           </div>
 
-          <div className="border-t border-border/60 px-5 py-4 md:px-8 bg-card/60">
+          {scene.id !== "opening" && <div className="border-t border-border/60 px-5 py-4 md:px-8 bg-card/60">
             <p className="text-[10px] tracking-[0.25em] uppercase text-primary">{scene.label}</p>
             <h1 className="font-heading text-xl md:text-3xl font-bold mt-1">{scene.title}</h1>
             <p className="text-[10px] uppercase tracking-[0.16em] text-muted-foreground mt-2">{scene.location}</p>
-          </div>
+          </div>}
 
           <div className={`p-5 md:p-8 border-t border-border/60 bg-background/90 ${state.readMode ? "md:px-14" : ""}`}>
             <div className="mb-3 h-1 overflow-hidden rounded-full bg-muted/40" aria-label="Episode progress">
