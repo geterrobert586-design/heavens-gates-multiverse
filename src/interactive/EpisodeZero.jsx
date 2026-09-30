@@ -195,8 +195,15 @@ export default function EpisodeZero() {
                     alt={scene.visual.alt || ""}
                     onError={() => setImageFailed(true)}
                     className="absolute inset-0 w-full h-full object-cover"
-                    style={{ objectPosition: scene.id === "opening" ? "center 20%" : scene.id === "ending" ? "center" : "center 24%" }}
+                    style={{ objectPosition: scene.id === "opening" ? "center top" : scene.id === "ending" ? "center" : "center 24%" }}
                   />
+                )}
+                {scene.id === "opening" && (
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/75 to-transparent px-4 pt-20 pb-6 text-center md:pb-10">
+                    <p className="font-heading text-3xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight text-amber-200 drop-shadow-lg">Heavens Gates</p>
+                    <p className="mt-2 text-[9px] sm:text-xs uppercase tracking-[0.28em] text-amber-100">The Interactive Chronicles</p>
+                    <p className="mt-3 font-heading text-sm sm:text-xl uppercase tracking-[0.18em] text-amber-200">Episode Zero · The Invitation</p>
+                  </div>
                 )}
               </motion.div>
             </AnimatePresence>
