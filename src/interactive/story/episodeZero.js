@@ -15,7 +15,7 @@ export const episodeZero = {
       label: "Episode Zero",
       title: "The Invitation",
       location: "Heavens Gates",
-      visual: { src: "/interactive/episode-zero/opening.webp", position: "center", alt: "Heavens Gates Interactive Chronicles opening" },
+      visual: { src: "/interactive/episode-zero/cover-dossier.webp", position: "center", alt: "Barry, Makaila, Lil Gangsta, Sarah Rae, Asad, and Jamila above the Heavens Gates city skyline" },
       narration: "Your choices will be remembered.",
       choices: [{ text: "Enter the Gates", next: "scene-1" }]
     },
