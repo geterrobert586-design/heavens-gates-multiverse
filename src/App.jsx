@@ -29,6 +29,8 @@ import MyLicenses from './pages/chronicle/MyLicenses';
 import Ebooks from './pages/chronicle/Ebooks';
 import EbookSuccess from './pages/chronicle/EbookSuccess';
 import ManageEbooks from './pages/admin/ManageEbooks';
+import InteractiveHome from './interactive/InteractiveHome';
+import EpisodeZero from './interactive/EpisodeZero';
 
 const AuthenticatedApp = () => {
   const { isLoadingAuth, isLoadingPublicSettings, authError, navigateToLogin } = useAuth();
@@ -77,7 +79,9 @@ const AuthenticatedApp = () => {
         <Route path="/books" element={<Ebooks />} />
         <Route path="/books/success" element={<EbookSuccess />} />
         <Route path="/admin/ebooks" element={<ManageEbooks />} />
+        <Route path="/interactive" element={<InteractiveHome />} />
       </Route>
+      <Route path="/interactive/episode-zero" element={<EpisodeZero />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
