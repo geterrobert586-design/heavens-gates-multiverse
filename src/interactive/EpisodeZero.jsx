@@ -179,7 +179,7 @@ export default function EpisodeZero() {
 
       <main className="flex-1 flex items-stretch justify-center p-4 md:p-8">
         <section className="w-full max-w-3xl min-h-[72vh] rounded-2xl border border-border/60 bg-card/40 overflow-hidden flex flex-col">
-          <div className={`relative overflow-hidden bg-background ${scene.id === "opening" ? "aspect-[5/6]" : scene.id === "ending" ? "aspect-[2/3]" : "aspect-[2/1]"}`}>
+          <div className={`relative overflow-hidden bg-background ${scene.id === "opening" ? "aspect-[5/6]" : scene.id === "ending" ? "aspect-[2/3]" : "aspect-[11/5]"}`}>
             <AnimatePresence mode="wait">
               <motion.div
                 key={scene.id}
@@ -195,7 +195,7 @@ export default function EpisodeZero() {
                     alt={scene.visual.alt || ""}
                     onError={() => setImageFailed(true)}
                     className="absolute inset-0 w-full h-full object-cover"
-                    style={{ objectPosition: scene.id === "opening" ? "center top" : scene.id === "ending" ? "center" : "center 22%" }}
+                    style={{ objectPosition: scene.id === "opening" ? "center 20%" : scene.id === "ending" ? "center" : "center 24%" }}
                   />
                 )}
               </motion.div>
